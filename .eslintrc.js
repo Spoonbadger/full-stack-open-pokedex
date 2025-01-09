@@ -1,3 +1,5 @@
+import 'webpack.config.js'
+
 module.exports = {
   "env": {
     "browser": true,
@@ -29,7 +31,7 @@ module.exports = {
     ],
     "quotes": [
       "error",
-      "single"
+      "double"
     ],
     "semi": [
       "error",
