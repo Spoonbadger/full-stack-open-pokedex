@@ -2,40 +2,18 @@ import "./webpack.config.js"
 import js from "@eslint/js"
 import globals from 'globals'
 
-// import stylisticJs from '@stylistic/eslint-plugin-js'
-
 export default [
   js.configs.recommended,
   {
-    "files": ["**/*.js"],
-    "languageOptions": {
-      "sourceType": "commonjs",
-      "globals": {
+    files: ["**/*.js"],
+    languageOptions: {
+      sourceType: "module",
+      globals: {
         ...globals.node,
       },
-      "ecmaVersion": "latest",
+      ecmaVersion: "latest",
     },
-    "env": {
-      "browser": true,
-      "es6": true,
-      "jest/globals": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended"
-    ],
-    "parser": "@babel/eslint-parser",
-    "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "ecmaVersion": 2020,
-      "sourceType": "module"
-    },
-    "plugins": [
-      "react", "jest"
-    ],
-    "rules": {
+    rules: {
       "indent": [
         "error",
         2
@@ -46,7 +24,7 @@ export default [
       ],
       "quotes": [
         "error",
-        "double"
+        "single"
       ],
       "semi": [
         "error",
@@ -62,9 +40,9 @@ export default [
       ],
       "no-console": "off",
       "react/prop-types": 0
-    }
+    },
   },
-  { 
+  {
     ignores: ["dist/**", "build/**"],
-  }
+  },
 ]
