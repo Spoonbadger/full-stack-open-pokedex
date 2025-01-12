@@ -1,53 +1,57 @@
 import HtmlWebPackPlugin from 'html-webpack-plugin'
 import { resolve as _resolve } from 'path'
 
-export const entry = './src/index.jsx'
-export const output = {
-  path: _resolve(new URL('.', import.meta.url).pathname, 'dist'),
-  filename: 'bundle.js',
-  publicPath: '/'
-}
-export const module = {
-  rules: [
-    {
-      test: /\.(js|jsx)$/,
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-      },
-    },
-    {
-      test: /\.html$/,
-      use: [
-        {
-          loader: 'html-loader',
-        },
-      ],
-    },
-    {
-      test: /\.css$/,
-      use: [
-        {
-          loader: 'style-loader',
-        },
-        {
-          loader: 'css-loader',
-        },
-      ],
-    }
-  ],
-}
-export const resolve = {
-  extensions: ['*', '.js', '.jsx'],
-}
-export const devServer = {
-  historyApiFallback: true,
-}
-export const plugins = [
-  new HtmlWebPackPlugin({
-    template: './public/index.html',
-    filename: './index.html',
-  }),
-]
 
-export default module
+const config = () => ({
+  entry: './src/index.jsx',
+  output: {
+    path: _resolve(new URL('.', import.meta.url).pathname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          },
+        ],
+      }
+    ],
+  },
+  resolve: {
+    extensions: ['*', '.js', '.jsx'],
+  },
+  devServer: {
+    historyApiFallback: true,
+  },
+  plugins: [
+    new HtmlWebPackPlugin({
+      template: './public/index.html',
+      filename: './index.html',
+    }),
+  ]
+})
+
+
+module.exports = config
