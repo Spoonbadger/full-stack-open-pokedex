@@ -49,3 +49,5 @@ export const plugins = [
     filename: './index.html',
   }),
 ]
+
+export default module
