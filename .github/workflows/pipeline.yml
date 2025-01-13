@@ -40,5 +40,3 @@ jobs:
       - name: test
         run: |
           npm run test
-
-# code to delete
