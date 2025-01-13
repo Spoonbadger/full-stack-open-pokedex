@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 5001
 app.use(express.static('dist'))
 
 app.listen(PORT, () => {
+  this_causes_error
   console.log(`server started on port ${PORT}`)
 })
 
