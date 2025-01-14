@@ -9,18 +9,18 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  hello_world_job:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Say hello
-        run: |
-          echo "Hello World"
-      - name: Give today's date
-        run: |
-          date
-      - name: Give current directory content
-        run: |
-          ls
+  # hello_world_job:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - name: Say hello
+  #       run: |
+  #         echo "Hello World"
+  #     - name: Give today's date
+  #       run: |
+  #         date
+  #     - name: Give current directory content
+  #       run: |
+  #         ls
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     steps:
@@ -40,11 +40,17 @@ jobs:
       - name: test
         run: |
           npm run test
-        if: ${{ github.event_name == 'push' }}
+  tag_release:
+    needs: simple_deployment_pipeline
+    runs-on: ubuntu 20.04
+    steps:
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.64.0
         with:
+          tag_prefix: "v"
           release_branches: main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-# code delete this.
+          DEFAULT_BUMP: patch
+
+# delete me
