@@ -41,7 +41,7 @@ jobs:
         run: |
           npm run test
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: simple_deployment_pipeline
     runs-on: ubuntu 20.04
     steps:
       - name: Bump version and push tag
@@ -52,3 +52,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+# delete me
