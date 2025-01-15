@@ -9,18 +9,6 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  # hello_world_job:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - name: Say hello
-  #       run: |
-  #         echo "Hello World"
-  #     - name: Give today's date
-  #       run: |
-  #         date
-  #     - name: Give current directory content
-  #       run: |
-  #         ls
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
     steps:
@@ -40,9 +28,28 @@ jobs:
       - name: test
         run: |
           npm run test
+  a_test_job:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: github context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: commits
+        env:
+          COMMITS: ${{ toJson(github.event.commits) }}
+        run: echo "$COMMITS"
+      - name: commit messages
+        env:
+          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+        run: echo "$COMMIT_MESSAGES"
   tag_release:
+    env:
+      CONDITION: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     needs: simple_deployment_pipeline
     runs-on: ubuntu 20.04
+    if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     steps:
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.64.0
@@ -53,4 +60,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
 
-# delete me
+
+
+  # hello_world_job:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - name: Say hello
+  #       run: |
+  #         echo "Hello World"
+  #     - name: Give today's date
+  #       run: |
+  #         date
+  #     - name: Give current directory content
+  #       run: |
+  #         ls
