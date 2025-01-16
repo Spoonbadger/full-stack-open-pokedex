@@ -33,14 +33,14 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          description: "Deployment ${{ github.event.commits[0].url }} by ${{ github.event.commits[0].committer.username }} successful"
+          description: "Deployment ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.committer.username }} successful"
 
       - name: The job has failed - Discord notification
         if: ${{ failure() }}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          description: "Commit ${{ github.event.commits[0].url }} by ${{ github.event.commits[0].committer.username }} failed"
+          description: "Commit ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.committer.username }} failed"
           
 
   a_test_job:
@@ -64,7 +64,7 @@ jobs:
       CONDITION: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     needs: simple_deployment_pipeline
     runs-on: ubuntu 20.04
-    if: ${{ github.env.condition == 'true' }}
+    if: ${{ github.env.CONDITION }}
     steps:
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.64.0
