@@ -33,14 +33,14 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          description: "Deployment ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.committer.username }} successful"
+          description: "Deployment successful"
 
       - name: The job has failed - Discord notification
         if: ${{ failure() }}
         uses: rjstone/discord-webhook-notify@v1
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-          description: "Commit ${{ github.event.head_commit.url }} by ${{ github.event.head_commit.committer.username }} failed"
+          description: "Commit failed"
           
 
   a_test_job:
