@@ -30,7 +30,7 @@ jobs:
           npm run test
 
       - name: Discord notification
-        if: failure()
+        if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
