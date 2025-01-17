@@ -29,28 +29,27 @@ jobs:
         run: |
           npm run test
 
-      - name: Test Success
-        uses: rjstone/discord-webhook-notify@v1
-        if: success()
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
         with:
-            severity: info
-            details: Test Succeeded!
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
 
-      - name: Test Failure
-        uses: rjstone/discord-webhook-notify@v1
+      # - name: Test Failure
+      #   uses: rjstone/discord-webhook-notify@v1
         if: failure()
-        with:
-            severity: error
-            details: Test Failed!
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Test Cancelled
-        uses: rjstone/discord-webhook-notify@v1
-        if: cancelled()
-        with:
-            severity: warn
-            details: Test Cancelled!
-            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      #   with:
+      #       severity: error
+      #       details: Test Failed!
+      #       webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      # - name: Test Cancelled
+      #   uses: rjstone/discord-webhook-notify@v1
+      #   if: cancelled()
+      #   with:
+      #       severity: warn
+      #       details: Test Cancelled!
+      #       webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
                 
 
   a_test_job:
