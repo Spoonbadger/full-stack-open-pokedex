@@ -36,7 +36,8 @@ jobs:
         uses: Ilshidur/action-discord@master
         with:
           args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed.'
-                
+  
+  # the github secret hook has been added correctly!
 
   a_test_job:
     runs-on: ubuntu-20.04
