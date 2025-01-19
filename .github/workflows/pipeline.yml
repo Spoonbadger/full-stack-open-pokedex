@@ -59,7 +59,7 @@ jobs:
               Application: [Link](https://full-stack-open-pokedex-lygk.onrender.com/)
               Time: 0 * * * *
               Status: Healthy'
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
         env:
           DEBUG: true
 
@@ -71,9 +71,10 @@ jobs:
           {
             severity: 'error',
             details: 'The project  failed to deploy at ....',
-            webhookUrl: "${{ secrets.DISCORD_WEBHOOK }}"
+            webhookUrl: "${{ secrets.DISCORD_WEBHOOK_URL }}"
           }
 
+          # different
 
   a_test_job:
     runs-on: ubuntu-20.04
