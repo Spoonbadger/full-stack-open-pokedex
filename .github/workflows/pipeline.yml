@@ -82,12 +82,14 @@ jobs:
           embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-ancient-lake-3589.fly.dev/)"
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-          #
+
+
+
 
   a_test_job:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: github context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -105,14 +107,13 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     steps:
+      - uses: actions/checkout@v3
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.64.0
         with:
-          tag_prefix: "v"
-          release_branches: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          WITH_V: true
+          PRERELEASE: true
 
 
 
