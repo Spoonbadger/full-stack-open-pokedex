@@ -46,20 +46,22 @@ jobs:
 # new thing
       - name: Notify Discord of success
         uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         if: success()
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
+          args: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
       - name: Notify Discord of Failure
         uses: Ilshidur/action-discord@master
-        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        if: failure()
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
+          args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
 
         
       - name: Discord Success Notification
-        uses: BubbleProd/discord-webhook-notify@v2
+        uses: rjstone/discord-webhook-notify@v1.0.4
         if: success()
         with:
           severity: info
@@ -70,7 +72,7 @@ jobs:
 
               
       - name: Discord Failure Notification
-        uses: BubbleProd/discord-webhook-notify@v2
+        uses: rjstone/discord-webhook-notify@v1.0.4
         if: failure()
         with:
           severity: error
