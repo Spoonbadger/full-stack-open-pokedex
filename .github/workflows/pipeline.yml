@@ -29,36 +29,6 @@ jobs:
         run: |
           npm run test
 
-      # - name: Discord Success Notification curl
-      #   if: success()
-      #   run: |
-      #     curl -X POST -H "Content-Type: application/json" \
-      #     -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project was successfully deployed ✅"}' \
-      #     ${{ secrets.DISCORD_WEBHOOK_URL }}
-      
-      # - name: Discord Failure Notification
-      #   if: failure()
-      #   run: |
-      #     curl -X POST -H "Content-Type: application/json" \
-      #     -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy ❌"}' \
-      #     ${{ secrets.DISCORD_WEBHOOK_URL }}
-      
-# new thing - creates a nice image of github on merge with main
-      # - name: Notify Discord of success Ilshidur
-      #   uses: Ilshidur/action-discord@master
-      #   env:
-      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      #   if: success()
-      #   with:
-      #     args: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
-      # - name: Notify Discord of Failure
-      #   uses: Ilshidur/action-discord@master
-      #   env:
-      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-      #   if: failure()
-      #   with:
-      #     args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
-
   # another version to notify, looks great
       - name: Discord Webhook Action on succeed - tsickert
         uses: tsickert/discord-webhook@v5.3.0
@@ -87,6 +57,10 @@ jobs:
     runs-on: ubuntu-20.04
     if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures full history is fetched for tagging
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@v1
         env:
@@ -94,6 +68,36 @@ jobs:
           DEFAULT_BUMP: patch
           PRERELEASE: true
 
+
+        # - name: Discord Success Notification curl
+      #   if: success()
+      #   run: |
+      #     curl -X POST -H "Content-Type: application/json" \
+      #     -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project was successfully deployed ✅"}' \
+      #     ${{ secrets.DISCORD_WEBHOOK_URL }}
+      
+      # - name: Discord Failure Notification
+      #   if: failure()
+      #   run: |
+      #     curl -X POST -H "Content-Type: application/json" \
+      #     -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy ❌"}' \
+      #     ${{ secrets.DISCORD_WEBHOOK_URL }}
+      
+# new thing - creates a nice image of github on merge with main
+      # - name: Notify Discord of success Ilshidur
+      #   uses: Ilshidur/action-discord@master
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      #   if: success()
+      #   with:
+      #     args: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
+      # - name: Notify Discord of Failure
+      #   uses: Ilshidur/action-discord@master
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      #   if: failure()
+      #   with:
+      #     args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
 
   # a_test_job:
   #   runs-on: ubuntu-20.04
