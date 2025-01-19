@@ -60,8 +60,7 @@ jobs:
               Time: 0 * * * *
               Status: Healthy'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        env:
-          DEBUG: true
+# /github added
 
               
       - name: Discord Failure Notification
