@@ -28,6 +28,7 @@ jobs:
       - name: test
         run: |
           npm run test
+      # small test added here
       - name: Debug Webhook URL
         run: |
           echo ${{ secrets.DISCORD_WEBHOOK }}
