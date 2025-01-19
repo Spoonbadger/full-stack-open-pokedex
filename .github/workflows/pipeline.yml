@@ -28,10 +28,12 @@ jobs:
       - name: test
         run: |
           npm run test
-      # small test added here
-      - name: Debug Webhook URL
-        run: |
-          echo ${{ secrets.DISCORD_WEBHOOK }}
+      # smallish test added here. no /github. have secret and webhook added on github
+      - name: Debug Webhook URL Unmasked
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: echo "$WEBHOOK"
+    
         
       - name: Discord Success Notification
         uses: rjstone/discord-webhook-notify@v1
@@ -50,7 +52,6 @@ jobs:
           details: 'The project  failed to deploy at ....'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       
-# /github on secrets url
 
   a_test_job:
     runs-on: ubuntu-20.04
