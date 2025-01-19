@@ -46,7 +46,7 @@ jobs:
           details: 'The project  failed to deploy at ....'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       
-# yes
+# /github on secrets url
 
   a_test_job:
     runs-on: ubuntu-20.04
