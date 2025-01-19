@@ -34,16 +34,30 @@ jobs:
           WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: echo "$WEBHOOK"
     
+      - name: Discord Success Notification
+        if: success()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"username": "Bot", "avatar_url": "https://example.com/avatar.png", "content": "The project was successfully deployed at ..."}' \
+          ${{ secrets.DISCORD_WEBHOOK }}
+      
+      - name: Discord Failure Notification
+        if: failure()
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{"username": "Bot", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy at ...."}' \
+          ${{ secrets.DISCORD_WEBHOOK }}
+      
         
       - name: Discord Success Notification
         uses: rjstone/discord-webhook-notify@v1
         if: success()
         with:
           severity: 'info'
-          details: 'The project  was successfully deployed at ...'
+          details: 'The project was successfully deployed at ...'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
-        
+              
       - name: Discord Failure Notification
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
@@ -51,7 +65,7 @@ jobs:
           severity: 'error'
           details: 'The project  failed to deploy at ....'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      
+
 
   a_test_job:
     runs-on: ubuntu-20.04
