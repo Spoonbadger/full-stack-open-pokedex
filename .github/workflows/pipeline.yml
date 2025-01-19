@@ -29,22 +29,22 @@ jobs:
         run: |
           npm run test
     
-      - name: Discord Success Notification
+      - name: Discord Success Notification curl
         if: success()
         run: |
           curl -X POST -H "Content-Type: application/json" \
-          -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "✅ The project was successfully deployed"}' \
+          -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project was successfully deployed ✅"}' \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
       
       - name: Discord Failure Notification
         if: failure()
         run: |
           curl -X POST -H "Content-Type: application/json" \
-          -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy at ...."}' \
+          -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy ❌"}' \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
       
 # new thing
-      - name: Notify Discord of success
+      - name: Notify Discord of success Ilshidur
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -59,24 +59,6 @@ jobs:
         with:
           args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
 
-        
-      - name: Discord Webhook Notify
-        uses: rjstone/discord-webhook-notify@v1.0.4
-        if: success()
-        with:
-          severity: info
-          details: ✅ **Health Check Passed!
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-              
-      - name: Discord Failure Notification
-        uses: rjstone/discord-webhook-notify@v1.0.4
-        if: failure()
-        with:
-          severity: error
-          details: The project  failed to deploy at ....
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
-  
 
 
   a_test_job:
