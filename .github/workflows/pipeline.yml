@@ -43,6 +43,7 @@ jobs:
           -d '{"username": "Bot", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy at ...."}' \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
       
+# new thing
         
       - name: Discord Success Notification
         uses: BubbleProd/discord-webhook-notify@v2
