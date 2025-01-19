@@ -45,13 +45,13 @@ jobs:
       
 # new thing
       - name: Notify Discord of success
-        uses: Ilshidur/action-discord@2.321.0
+        uses: Ilshidur/action-discord@master
         if: success()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           message: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
       - name: Notify Discord of Failure
-        uses: Ilshidur/action-discord@2.321.0
+        uses: Ilshidur/action-discord@master
         if: success()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
