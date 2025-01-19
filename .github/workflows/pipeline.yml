@@ -28,7 +28,7 @@ jobs:
       - name: test
         run: |
           npm run test
-    
+
       # - name: Discord Success Notification curl
       #   if: success()
       #   run: |
@@ -82,40 +82,35 @@ jobs:
           embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-ancient-lake-3589.fly.dev/)"
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
-
-
-
-
-  a_test_job:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v3
-      - name: github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: commits
-        env:
-          COMMITS: ${{ toJson(github.event.commits) }}
-        run: echo "$COMMITS"
-      - name: commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
   tag_release:
     needs: simple_deployment_pipeline
     runs-on: ubuntu-20.04
-    permissions:
-      contents: write
     if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     steps:
-      - uses: actions/checkout@v3
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.64.0
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          WITH_V: true
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
           PRERELEASE: true
+
+
+  # a_test_job:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: github context
+  #       env:
+  #         GITHUB_CONTEXT: ${{ toJson(github) }}
+  #       run: echo "$GITHUB_CONTEXT"
+  #     - name: commits
+  #       env:
+  #         COMMITS: ${{ toJson(github.event.commits) }}
+  #       run: echo "$COMMITS"
+  #     - name: commit messages
+  #       env:
+  #         COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+  #       run: echo "$COMMIT_MESSAGES"
 
 
 
