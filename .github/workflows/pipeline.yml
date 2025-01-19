@@ -29,7 +29,8 @@ jobs:
         run: |
           npm run test
       - name: Debug Webhook URL
-        run: echo ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          echo ${{ secrets.DISCORD_WEBHOOK }}
         
       - name: Discord Success Notification
         uses: rjstone/discord-webhook-notify@v1
