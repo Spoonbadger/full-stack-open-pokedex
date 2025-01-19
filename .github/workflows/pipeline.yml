@@ -47,27 +47,25 @@ jobs:
       - name: Notify Discord of success
         uses: Ilshidur/action-discord@master
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         if: success()
         with:
           args: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
       - name: Notify Discord of Failure
         uses: Ilshidur/action-discord@master
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         if: failure()
         with:
           args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
 
         
-      - name: Discord Success Notification
+      - name: Discord Webhook Notify
         uses: rjstone/discord-webhook-notify@v1.0.4
         if: success()
         with:
           severity: info
-          details: |
-            '✅ **Health Check Passed!**
-              Status: Healthy'
+          details: ✅ **Health Check Passed!
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
               
@@ -76,7 +74,7 @@ jobs:
         if: failure()
         with:
           severity: error
-          details: 'The project  failed to deploy at ....'
+          details: The project  failed to deploy at ....
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
   
 
