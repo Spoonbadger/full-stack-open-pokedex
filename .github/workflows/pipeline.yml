@@ -34,7 +34,7 @@ jobs:
         if: success()
         with:
           severity: 'info'
-          details: 'The project ${{ github.repository }} was successfully deployed at ...'
+          details: 'The project  was successfully deployed at ...'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
         
@@ -43,7 +43,7 @@ jobs:
         if: failure()
         with:
           severity: 'error'
-          details: 'The project ${{ github.repository }} failed to deploy at ....'
+          details: 'The project  failed to deploy at ....'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       
 # yes
