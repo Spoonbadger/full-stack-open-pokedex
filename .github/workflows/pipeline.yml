@@ -53,9 +53,11 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: success()
         with:
-          severity: 'info'
-          details: 'The project was successfully deployed at ...'
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          {
+            severity: 'info',
+            details: 'The project was successfully deployed at ...',
+            webhookUrl: "${{ secrets.DISCORD_WEBHOOK }}"
+          }
         env:
           DEBUG: true
 
@@ -64,9 +66,11 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
         with:
-          severity: 'error'
-          details: 'The project  failed to deploy at ....'
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          {
+            severity: 'error',
+            details: 'The project  failed to deploy at ....',
+            webhookUrl: "${{ secrets.DISCORD_WEBHOOK }}"
+          }
 
 
   a_test_job:
