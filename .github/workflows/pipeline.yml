@@ -29,48 +29,60 @@ jobs:
         run: |
           npm run test
     
-      - name: Discord Success Notification curl
-        if: success()
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-          -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project was successfully deployed ✅"}' \
-          ${{ secrets.DISCORD_WEBHOOK_URL }}
+      # - name: Discord Success Notification curl
+      #   if: success()
+      #   run: |
+      #     curl -X POST -H "Content-Type: application/json" \
+      #     -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project was successfully deployed ✅"}' \
+      #     ${{ secrets.DISCORD_WEBHOOK_URL }}
       
-      - name: Discord Failure Notification
-        if: failure()
-        run: |
-          curl -X POST -H "Content-Type: application/json" \
-          -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy ❌"}' \
-          ${{ secrets.DISCORD_WEBHOOK_URL }}
+      # - name: Discord Failure Notification
+      #   if: failure()
+      #   run: |
+      #     curl -X POST -H "Content-Type: application/json" \
+      #     -d '{"username": "Spoonbadger", "avatar_url": "https://example.com/avatar.png", "content": "The project failed to deploy ❌"}' \
+      #     ${{ secrets.DISCORD_WEBHOOK_URL }}
       
-# new thing
-      - name: Notify Discord of success Ilshidur
-        uses: Ilshidur/action-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        if: success()
-        with:
-          args: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
-      - name: Notify Discord of Failure
-        uses: Ilshidur/action-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        if: failure()
-        with:
-          args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
+# new thing - creates a nice image of github on merge with main
+      # - name: Notify Discord of success Ilshidur
+      #   uses: Ilshidur/action-discord@master
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      #   if: success()
+      #   with:
+      #     args: "✅ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} successful"
+      # - name: Notify Discord of Failure
+      #   uses: Ilshidur/action-discord@master
+      #   env:
+      #     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      #   if: failure()
+      #   with:
+      #     args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
 
-  # another version to notify
+  # another version to notify, looks great
       - name: Discord Webhook Action on succeed - tsickert
         uses: tsickert/discord-webhook@v5.3.0
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') && success()}}
         with:
-          username: Github Actions
+          username: Full Stack part 11
           avatar-url: https://avatars.githubusercontent.com/u/9919?v=4
           embed-color: 6144854
           embed-title: 🚀  New version deployed of ${{github.repository}}
           embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-1-0y5t.onrender.com)"
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
 
+      - name: Discord Webhook Action on failure - tsickert
+        uses: tsickert/discord-webhook@v5.3.0
+        if: ${{ failure()}}
+        with:
+          username: Full Stack part 11
+          avatar-url: https://avatars.githubusercontent.com/u/9919?v=4
+          embed-color: 15548997
+          embed-title: FAILED - New version deployed of ${{github.repository}} - FAILED
+          embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-1-0y5t.onrender.com)"
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          #
 
   a_test_job:
     runs-on: ubuntu-20.04
