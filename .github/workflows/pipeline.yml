@@ -28,8 +28,48 @@ jobs:
       - name: test
         run: |
           npm run test
-    
-      # - name: Discord Success Notification curl
+
+  # another version to notify, looks great
+      - name: Discord Webhook Action on succeed - tsickert
+        uses: tsickert/discord-webhook@v5.3.0
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') && success()}}
+        with:
+          username: Full Stack part 11
+          avatar-url: https://avatars.githubusercontent.com/u/9919?v=4
+          embed-color: 6144854
+          embed-title: 🚀  New version deployed of ${{github.repository}}
+          embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-ancient-lake-3589.fly.dev/)"
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Discord Webhook Action on failure - tsickert
+        uses: tsickert/discord-webhook@v5.3.0
+        if: ${{ failure()}}
+        with:
+          username: Full Stack part 11
+          avatar-url: https://avatars.githubusercontent.com/u/9919?v=4
+          embed-color: 15548997
+          embed-title: FAILED - New version deployed of ${{github.repository}} - FAILED
+          embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-ancient-lake-3589.fly.dev/)"
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+  tag_release:
+    needs: simple_deployment_pipeline
+    runs-on: ubuntu-20.04
+    if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures full history is fetched for tagging
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          PRERELEASE: true
+
+
+        # - name: Discord Success Notification curl
       #   if: success()
       #   run: |
       #     curl -X POST -H "Content-Type: application/json" \
@@ -59,60 +99,22 @@ jobs:
       #   with:
       #     args: "❌ Deployment ${{ github.event.head_commit.url }} by ${{ github.actor }} failed"
 
-  # another version to notify, looks great
-      - name: Discord Webhook Action on succeed - tsickert
-        uses: tsickert/discord-webhook@v5.3.0
-        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') && success()}}
-        with:
-          username: Full Stack part 11
-          avatar-url: https://avatars.githubusercontent.com/u/9919?v=4
-          embed-color: 6144854
-          embed-title: 🚀  New version deployed of ${{github.repository}}
-          embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-ancient-lake-3589.fly.dev/)"
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-      - name: Discord Webhook Action on failure - tsickert
-        uses: tsickert/discord-webhook@v5.3.0
-        if: ${{ failure()}}
-        with:
-          username: Full Stack part 11
-          avatar-url: https://avatars.githubusercontent.com/u/9919?v=4
-          embed-color: 15548997
-          embed-title: FAILED - New version deployed of ${{github.repository}} - FAILED
-          embed-description: "**Repository:** [${{github.repository}}](${{github.event.repository.html_url}}) \n**Latest Commit:** [${{github.event.commits[0].id}}](${{github.event.commits[0].url}}) \n**By:** ${{github.event.commits[0].author.username}} \n**URL:** [follow link](https://full-stack-open-pokedex-ancient-lake-3589.fly.dev/)"
-          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-          #
-
-  a_test_job:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: commits
-        env:
-          COMMITS: ${{ toJson(github.event.commits) }}
-        run: echo "$COMMITS"
-      - name: commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
-  tag_release:
-    needs: simple_deployment_pipeline
-    runs-on: ubuntu 20.04
-    if: ${{ !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-    steps:
-      - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.64.0
-        with:
-          tag_prefix: "v"
-          release_branches: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
+  # a_test_job:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: github context
+  #       env:
+  #         GITHUB_CONTEXT: ${{ toJson(github) }}
+  #       run: echo "$GITHUB_CONTEXT"
+  #     - name: commits
+  #       env:
+  #         COMMITS: ${{ toJson(github.event.commits) }}
+  #       run: echo "$COMMITS"
+  #     - name: commit messages
+  #       env:
+  #         COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
+  #       run: echo "$COMMIT_MESSAGES"
 
 
 
