@@ -34,7 +34,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         with:
           severity: info
-          details: 'The project {{ github.repository }} was successfully deployed at {{ github.event.created_at }}.'
+          details: 'The project ${{ github.repository }} was successfully deployed at ${{ github.event.created_at }}.'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
         
       - name: Discord Failure Notification
@@ -42,7 +42,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         with:
           severity: error
-          details: 'The project {{ github.repository }} failed to deploy at {{ github.event.created_at }}.'
+          details: 'The project ${{ github.repository }} failed to deploy at ${{ github.event.created_at }}.'
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       
 
