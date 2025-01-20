@@ -2,7 +2,7 @@ name: cron-daily-testing
 
 on:
   schedule:
-    - cron: '37 * * * 1-5'
+    - cron: '37 * * * *'
 
 jobs:
   test_schedule:
